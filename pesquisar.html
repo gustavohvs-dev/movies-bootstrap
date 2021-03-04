@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Assista seus filmes e séries favoritos na MoFilm!">
+  <meta name="author" content="Gustavo Henrique Vieira Soares">
+  <meta name="keywords" content="Filmes, séries, talkshows, movies, films">
+
+  <title>MoFilm</title>
+
+  <!-- Importando CSS Bootstrap -->
+  <link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+  <!-- Importando Fontawesome -->
+  <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+  <!-- Alterando Favicon -->
+  <link rel="shortcut icon" href="assets/favicon.png">
+
+</head>
+
+<body>
+
+  <!-- 
+    
+    Navbar
+
+   -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">
+      <img src="assets/logo.png" width="120" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html#lancamentos">Lançamentos </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="index.html#populares">Populares </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="index.html#destaque">Em destaque</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="index.html#avaliacoes">Avaliações</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="index.html#makingof">Entrevistas & Making of</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="index.html#novidades">Novidades</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <br><br>
+
+  <!-- 
+    
+    Pesquisar
+
+   -->
+  <section class="container" id="pesquisar">
+    <h2 class="text-center mt-5 mb-5">Pesquisar</h2>
+    <form>
+      <label for="filmName">Nome do filme</label>
+      <input type="text" class="form-control" id="buscarNome" aria-describedby="filmHelp">
+      <small id="filmHelp" class="form-text text-muted">Digite o nome do filme na caixa acima.</small>
+      <div class="form-group mt-3">
+        <label for="exampleFormControlSelect1">Gênero</label>
+        <select class="form-control" id="buscarCategoria">
+          <option value="28">Ação</option>
+          <option value="12">Aventura</option>
+          <option value="16">Animação</option>
+          <option value="35">Comédia</option>
+          <option value="80">Criminal</option>
+          <option value="99">Documentário</option>
+          <option value="18">Drama</option>
+          <option value="10751">Família</option>
+          <option value="14">Fantasia</option>
+          <option value="36">História</option>
+          <option value="27">Terror</option>
+          <option value="10402">Musical</option>
+          <option value="9648">Mistério</option>
+          <option value="10749">Romance</option>
+          <option value="878">Ficção Científica</option>
+          <option value="53">Thriller</option>
+          <option value="10752">Guerra</option>
+          <option value="37">Faroeste</option>
+        </select>
+      </div>
+    </form>
+    <button onClick="searchName()" type="button" class="btn btn-primary">Pesquisar por nome</button>
+    <button onClick="searchCategory()" type="button" class="btn btn-info">Pesquisar por categoria</button>
+    <br><br>
+    <div id="pesquisalist"></div>
+  </section>
+
+  <br>
+
+  <!-- 
+    
+    Footer
+
+   -->
+  <footer class="container d-none d-lg-block">
+    <div class="pt-4 my-md-5 pt-md-5 border-top">
+      <div class="row">
+        <div class="col-md-3">
+          <img class="mb-2" src="assets/logo-puc.jpg" alt="" width="120" height="100">
+        </div>
+        <div class="col-md-9 text-right">
+          <h3>Website desenvolvido por Gustavo Soares</h3>
+          <h5>Sistemas de Informação - PUC MINAS - 2020</h5>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <footer class="container d-lg-none d-sm-block">
+    <div class="pt-4 my-md-5 pt-md-5 border-top">
+      <div class="text-center">
+        <img class="mb-2" src="assets/logo-puc.jpg" alt="" width="120" height="100">
+      </div>
+    </div>
+  </footer>
+
+  <!-- Importando JS Bootstrap -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Ajax MovieDB -->
+  <script>
+    function searchCategory(){
+
+      var buscarCategoria = $("#buscarCategoria").val();
+
+      $.get("https://api.themoviedb.org/3/discover/movie?api_key=ca79e05bee0c926408294778259c8402&language=pt-BR&sort_by=popularity.desc&include_adult=false&include_video=false&with_genres="+buscarCategoria+"&page=1", function(data, status) {
+        if(status=='success'){
+          $('#pesquisalist').empty();
+          for (var i = 0; i < 20; i++) {
+          card = "<div class=\"card-header py-3\"><h6 class=\"m-0 font-weight-bold text-dark\">"+data.results[i].title+"</h6></div><div class=\"card-body\"><div class=\"row\"><div class=\"col-lg-2 mb-3\"><div class=\"text-center\"><img class=\"img-fluid rounded\" style=\"width: 150px;\" src=\"http://image.tmdb.org/t/p/w185"+data.results[i].poster_path+"\" alt=\"\"></div></div><div class=\"col-lg-10\"><p>"+data.results[i].overview+"</p><p>Data de lançamento: "+data.results[i].release_date+"</p><p>Pontuação: "+data.results[i].vote_average+"</p></div></div> </div></div>";
+          $("#pesquisalist").append(card);
+          }
+        }else{
+          console.log(status);
+        }   
+      })
+
+    };
+
+    function searchName(){
+
+      var buscarNome = $("#buscarNome").val();
+
+      $.get("https://api.themoviedb.org/3/search/multi?api_key=ca79e05bee0c926408294778259c8402&language=pt-BR&page=1&include_adult=false&query="+buscarNome+"", function(data, status) {
+        if(status=='success'){
+          $('#pesquisalist').empty();
+          for (var i = 0; i < 20; i++) {
+          card = "<div class=\"card-header py-3\"><h6 class=\"m-0 font-weight-bold text-dark\">"+data.results[i].title+"</h6></div><div class=\"card-body\"><div class=\"row\"><div class=\"col-lg-2 mb-3\"><div class=\"text-center\"><img class=\"img-fluid rounded\" style=\"width: 150px;\" src=\"http://image.tmdb.org/t/p/w185"+data.results[i].poster_path+"\" alt=\"\"></div></div><div class=\"col-lg-10\"><p>"+data.results[i].overview+"</p><p>Data de lançamento: "+data.results[i].release_date+"</p><p>Pontuação: "+data.results[i].vote_average+"</p></div></div> </div></div>";
+          $("#pesquisalist").append(card);
+          }
+        }else{
+          console.log(status);
+        }   
+      })
+
+    };
+  </script>
+
+</body>
+
+</html>
